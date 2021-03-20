@@ -31,4 +31,11 @@ public class UserController {
         System.out.println("getAllUser ....");
         return Result.success(userService.getAllUser());
     }
+
+    @RequestMapping(value = "/getAllUserStr",
+            method = RequestMethod.GET)
+    public String getAllUserStr() {
+        System.out.println("getAllUser ....");
+        return userService.getAllUser().toString();
+    }
 }

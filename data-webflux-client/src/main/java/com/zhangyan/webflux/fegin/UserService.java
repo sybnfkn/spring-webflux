@@ -22,7 +22,14 @@ public class UserService {
     private UserFeginService userFeginService;
 
     public Mono<List<User>> getAllUser() {
-        return userFeginService.getAllUser();
+        return userFeginService.getAllUser().map(result -> {
+            if (result.getCode() == 200) {
+                System.out.println("sucess.....");
+                return result.getData();
+            } else {
+                return null;
+            }
+        });
     }
 
 }

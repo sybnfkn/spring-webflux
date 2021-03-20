@@ -16,7 +16,7 @@ import java.util.List;
 public interface UserFeginService {
 
     @RequestLine("GET /getAllUser")
-    Mono<List<User>> getAllUser();
+    Mono<Result<List<User>>> getAllUser();
 
 
 
