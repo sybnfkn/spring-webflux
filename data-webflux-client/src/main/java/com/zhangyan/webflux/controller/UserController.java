@@ -1,21 +1,25 @@
-package com.zhangyan.webflux.webflux.controller;
+package com.zhangyan.webflux.controller;
 
 import com.zhangyan.webflux.domain.City;
-import com.zhangyan.webflux.fegin.TestService;
+import com.zhangyan.webflux.domain.User;
+import com.zhangyan.webflux.fegin.UserService;
 import com.zhangyan.webflux.handler.CityHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/city")
-public class CityWebFluxController {
+public class UserController {
 
     @Autowired
     private CityHandler cityHandler;
 
     @Autowired
-    private TestService testService;
+    private UserService userService;
+
 
     @GetMapping(value = "/{id}")
     public Mono<City> findCityById(@PathVariable("id") Long id) {
@@ -23,9 +27,11 @@ public class CityWebFluxController {
     }
 
     @GetMapping()
-    public Mono<String> findAllCity() {
-//        return cityHandler.findAllCity();
-        return testService.findAllCity();
+    public Mono<List<User>> findAllCity() {
+        return userService.getAllUser().map(t -> {
+            System.out.println("anbc.......");
+            return t;
+        });
     }
 
     @PostMapping()

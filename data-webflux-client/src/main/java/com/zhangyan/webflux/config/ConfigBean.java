@@ -1,4 +1,4 @@
-package com.zhangyan.webflux.fegin;
+package com.zhangyan.webflux.config;
 
 import com.netflix.client.DefaultLoadBalancerRetryHandler;
 import com.netflix.client.RequestSpecificRetryHandler;
@@ -8,70 +8,47 @@ import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.HystrixObservableCommand;
 import com.netflix.loadbalancer.reactive.LoadBalancerCommand;
-import feign.RequestLine;
+import com.zhangyan.webflux.api.UserFeginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.ribbon.SpringClientFactory;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import reactivefeign.cloud.CloudReactiveFeign;
-import reactor.core.publisher.Mono;
 
 import static reactivefeign.ReactiveRetryers.retry;
-
-//import static reactivefeign.ReactiveRetryers.retry;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @Auther: Messi
- * @Date: 2021/03/16/9:40 下午
+ * @Date: 2021/03/20/10:37 下午
  * @Description:
  */
-@Service
-public class TestService {
+@Configuration
+public class ConfigBean {
 
     @Autowired
     private SpringClientFactory clientFactory;
 
-    public Mono<String> findAllCity() {
+    private static final String USER_SERVICE_NAME = "data-server";
+
+    @Bean
+    public UserFeginService userFeginService() {
         RetryHandler retryHandler = new RequestSpecificRetryHandler(true, true,
                 new DefaultLoadBalancerRetryHandler(0, 2, true), null);
 
-        String serviceName = "data-server";
-
-
-        /**
-         * serviceName ->
-         *                     LoadBalancerCommand.builder()
-         *                     .withLoadBalancer(ClientFactory.getNamedLoadBalancer(serviceName))
-         *                     .withRetryHandler(retryHandler)
-         *                     .build()
-         */
-
-
-        TestInterface client = CloudReactiveFeign.<TestInterface>builder()
+        return CloudReactiveFeign.<UserFeginService>builder()
                 .retryWhen(retry(3))
 //                .enableLoadBalancer()
-
                 .setLoadBalancerCommandFactory(name ->
                         LoadBalancerCommand.builder()
-                                .withLoadBalancer(clientFactory.getLoadBalancer(serviceName))
+                                .withLoadBalancer(clientFactory.getLoadBalancer(USER_SERVICE_NAME))
                                 .withRetryHandler(retryHandler)
                                 .build())
 
                 .setHystrixCommandSetterFactory(getSetterFactoryWithTimeoutDisabled())
-                .target(TestInterface.class, "http://data-server");
-
-        System.out.println("group" + Thread.currentThread().getThreadGroup());
-        System.out.println("thread" + Thread.currentThread().getName());
-
-
-
-
-        return client.get();
+                .target(UserFeginService.class, "http://" + USER_SERVICE_NAME);
     }
-
-
 
     private static CloudReactiveFeign.SetterFactory getSetterFactoryWithTimeoutDisabled() {
         return (target, methodMetadata) -> {
@@ -86,9 +63,7 @@ public class TestService {
         };
     }
 
-    @FeignClient
-    interface TestInterface {
-        @RequestLine("GET /get")
-        Mono<String> get();
-    }
+
+
+
 }
