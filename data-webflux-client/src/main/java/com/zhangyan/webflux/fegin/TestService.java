@@ -37,7 +37,7 @@ public class TestService {
         RetryHandler retryHandler = new RequestSpecificRetryHandler(true, true,
                 new DefaultLoadBalancerRetryHandler(0, 2, true), null);
 
-        String serviceName = "EUREKA-SERVER";
+        String serviceName = "data-server";
 
 
         /**
@@ -60,7 +60,7 @@ public class TestService {
                                 .build())
 
                 .setHystrixCommandSetterFactory(getSetterFactoryWithTimeoutDisabled())
-                .target(TestInterface.class, "http://EUREKA-SERVER");
+                .target(TestInterface.class, "http://data-server");
 
         System.out.println("group" + Thread.currentThread().getThreadGroup());
         System.out.println("thread" + Thread.currentThread().getName());

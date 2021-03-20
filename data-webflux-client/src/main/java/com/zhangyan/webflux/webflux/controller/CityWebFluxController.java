@@ -25,10 +25,7 @@ public class CityWebFluxController {
     @GetMapping()
     public Mono<String> findAllCity() {
 //        return cityHandler.findAllCity();
-        return testService.findAllCity().map((t) -> {
-            System.out.println(t);
-            return t;
-        });
+        return testService.findAllCity();
     }
 
     @PostMapping()
