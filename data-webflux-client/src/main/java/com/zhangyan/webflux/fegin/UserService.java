@@ -32,4 +32,15 @@ public class UserService {
         });
     }
 
+    public Mono<List<User>> getAllUserWithTime(Integer latency) {
+        return userFeginService.getAllUserWithTime(latency).map(result -> {
+            if (result.getCode() == 200) {
+                System.out.println("sucess.....");
+                return result.getData();
+            } else {
+                return null;
+            }
+        });
+    }
+
 }

@@ -4,10 +4,7 @@ import com.zhangyan.server.api.Result;
 import com.zhangyan.server.domain.User;
 import com.zhangyan.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,13 +26,25 @@ public class UserController {
             method = RequestMethod.GET)
     public Result<List<User>> getAllUser() {
         System.out.println("getAllUser ....");
+        try {
+            Thread.sleep(20 * 10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return Result.success(userService.getAllUser());
     }
 
-    @RequestMapping(value = "/getAllUserStr",
+
+    @RequestMapping(value = "/getAllUser/time",
             method = RequestMethod.GET)
-    public String getAllUserStr() {
-        System.out.println("getAllUser ....");
-        return userService.getAllUser().toString();
+    public Result<List<User>> getAllUserWithTime(@RequestParam Integer latency) {
+        System.out.println("getAllUserWithTime ....");
+        try {
+            Thread.sleep(latency * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return Result.success(userService.getAllUser());
     }
+
 }

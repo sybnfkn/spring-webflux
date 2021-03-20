@@ -19,8 +19,14 @@ public class UserController {
 
 
     @GetMapping()
-    public Mono<List<User>> findAllCity() {
+    public Mono<List<User>> getAllUser() {
         return userService.getAllUser();
     }
+
+    @GetMapping("/{latency}")
+    public Mono<List<User>> getAllUserWithTime(@PathVariable Integer latency) {
+        return userService.getAllUserWithTime(latency);
+    }
+
 
 }
