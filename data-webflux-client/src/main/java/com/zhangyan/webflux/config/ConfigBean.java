@@ -37,17 +37,30 @@ public class ConfigBean {
         RetryHandler retryHandler = new RequestSpecificRetryHandler(true, true,
                 new DefaultLoadBalancerRetryHandler(0, 2, true), null);
 
-        return CloudReactiveFeign.<UserFeginService>builder()
-                .retryWhen(retry(3))
+        CloudReactiveFeign.Builder<UserFeginService> builder = CloudReactiveFeign.<UserFeginService>builder()
+//                .retryWhen(retry(3))
 //                .enableLoadBalancer()
                 .setLoadBalancerCommandFactory(name ->
                         LoadBalancerCommand.builder()
                                 .withLoadBalancer(clientFactory.getLoadBalancer(USER_SERVICE_NAME))
-                                .withRetryHandler(retryHandler)
-                                .build())
+//                                .withRetryHandler(retryHandler)
+                                .build());
+        builder.disableHystrix();
+        return builder.target(UserFeginService.class, "http://" + USER_SERVICE_NAME);
+//
+//        return CloudReactiveFeign.<UserFeginService>builder()
+////                .retryWhen(retry(3))
+////                .enableLoadBalancer()
+//                .setLoadBalancerCommandFactory(name ->
+//                        LoadBalancerCommand.builder()
+//                                .withLoadBalancer(clientFactory.getLoadBalancer(USER_SERVICE_NAME))
+////                                .withRetryHandler(retryHandler)
+//                                .build())
+//
+//
+////                .setHystrixCommandSetterFactory(getSetterFactoryWithTimeoutDisabled())
+//                .target(UserFeginService.class, "http://" + USER_SERVICE_NAME);
 
-                .setHystrixCommandSetterFactory(getSetterFactoryWithTimeoutDisabled())
-                .target(UserFeginService.class, "http://" + USER_SERVICE_NAME);
     }
 
     private static CloudReactiveFeign.SetterFactory getSetterFactoryWithTimeoutDisabled() {

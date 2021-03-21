@@ -1,5 +1,8 @@
 server:
   port: 9002
+  tomcat:
+    max-threads: 1000
+
 
 spring:
   application:
@@ -34,3 +37,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 debug: true
+

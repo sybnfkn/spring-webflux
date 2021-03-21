@@ -37,14 +37,14 @@ public class UserController {
 
     @RequestMapping(value = "/getAllUser/time",
             method = RequestMethod.GET)
-    public Result<List<User>> getAllUserWithTime(@RequestParam Integer latency) {
+    public Result<List<User>> getAllUserWithTime(@RequestParam(required = false) Integer latency) {
         System.out.println("getAllUserWithTime ....");
         try {
-            Thread.sleep(latency * 1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return Result.success(userService.getAllUser());
+        return Result.success(null);
     }
 
 }

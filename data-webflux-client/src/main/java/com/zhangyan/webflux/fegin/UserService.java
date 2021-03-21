@@ -1,5 +1,6 @@
 package com.zhangyan.webflux.fegin;
 
+import com.zhangyan.webflux.api.Result;
 import com.zhangyan.webflux.api.UserFeginService;
 import com.zhangyan.webflux.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,8 @@ public class UserService {
         });
     }
 
-    public Mono<List<User>> getAllUserWithTime(Integer latency) {
-        return userFeginService.getAllUserWithTime(latency).map(result -> {
-            if (result.getCode() == 200) {
-                System.out.println("sucess.....");
-                return result.getData();
-            } else {
-                return null;
-            }
-        });
+    public Mono<Result<List<User>>> getAllUserWithTime(Integer latency) {
+        return userFeginService.getAllUserWithTime(latency);
     }
 
 }
