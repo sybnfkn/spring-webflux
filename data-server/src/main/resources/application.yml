@@ -1,7 +1,8 @@
 server:
   port: 9002
   tomcat:
-    max-threads: 1000
+    # 默认200，这里设置500
+    max-threads: 500
 
 
 spring:

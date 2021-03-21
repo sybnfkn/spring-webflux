@@ -45,6 +45,7 @@ public class ConfigBean {
                                 .withLoadBalancer(clientFactory.getLoadBalancer(USER_SERVICE_NAME))
 //                                .withRetryHandler(retryHandler)
                                 .build());
+        // 禁用hytrix，否则影响并发请求
         builder.disableHystrix();
         return builder.target(UserFeginService.class, "http://" + USER_SERVICE_NAME);
 //
