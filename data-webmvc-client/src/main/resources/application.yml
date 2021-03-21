@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  tomcat:
+    # 默认200，这里设置100
+    max-threads: 100
+
+
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+#debug: true
