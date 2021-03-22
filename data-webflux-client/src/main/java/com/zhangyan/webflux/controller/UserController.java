@@ -27,7 +27,9 @@ public class UserController {
     @GetMapping("/{latency}")
     public Mono<Result<List<User>>> getAllUserWithTime(@PathVariable Integer latency) {
         return userService.getAllUserWithTime(latency).map(result -> {
-            System.out.println(result.toString());
+            if (result.getCode() == 400) {
+                System.out.println(result.toString());
+            }
             return result;
         });
     }

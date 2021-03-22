@@ -1,5 +1,6 @@
 package com.zhangyan.webflux.api;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -17,9 +18,9 @@ public class Result<T> {
     private String traceId;
     private T data;
 
-    protected Result() {}
+    public Result() {}
 
-    protected Result(Integer code, String message, T data) {
+    public Result(Integer code, String message, T data) {
         this.code = code;
         this.msg = message;
         this.data = data;
