@@ -49,7 +49,7 @@ public class ConfigBean {
 //                                .withRetryHandler(retryHandler)
                                 .build());
         // 使用hystrix需要打开下面注释
-//                .setHystrixCommandSetterFactory(getSetterFactoryWithTimeoutDisabled());
+//                .setHystrixCommandSetterFactory(getSetterFactoryWithTimeout());
 //                .setFallback(new UserFeginService() {
 //                    @Override
 //                    public Mono<Result<List<User>>> getAllUser() {

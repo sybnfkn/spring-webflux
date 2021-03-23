@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 @RestController
@@ -26,13 +29,17 @@ public class UserController {
 
     @GetMapping("/{latency}")
     public Mono<Result<List<User>>> getAllUserWithTime(@PathVariable Integer latency) {
-        return userService.getAllUserWithTime(latency).map(result -> {
-            if (result.getCode() == 400) {
-                System.out.println(result.toString());
-            }
-            return result;
-        });
+        return userService.getAllUserWithTime(latency)
+                // 110 ms超时
+                .timeout(Duration.of(110, ChronoUnit.MILLIS),
+                    Mono.just(new Result<>(300, "timeout", null)))
+                .map(result -> {
+                    if (result.getCode() == 400) {
+                        System.out.println(result.toString());
+                    } else if (result.getCode() == 300) {
+                        System.out.println("超时:" + result.toString());
+                    }
+                    return result;
+                });
     }
-
-
 }
