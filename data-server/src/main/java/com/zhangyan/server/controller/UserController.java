@@ -3,6 +3,7 @@ package com.zhangyan.server.controller;
 import com.zhangyan.server.api.Result;
 import com.zhangyan.server.domain.User;
 import com.zhangyan.server.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @Date: 2021/02/23/9:16 下午
  * @Description:
  */
+@Slf4j
 @RestController
 public class UserController {
 
