@@ -5,20 +5,13 @@ import com.netflix.client.RequestSpecificRetryHandler;
 import com.netflix.client.RetryHandler;
 import com.netflix.hystrix.*;
 import com.netflix.loadbalancer.reactive.LoadBalancerCommand;
-import com.zhangyan.webflux.api.Result;
 import com.zhangyan.webflux.api.UserFeginService;
-import com.zhangyan.webflux.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.ribbon.SpringClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactivefeign.cloud.CloudReactiveFeign;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static reactivefeign.ReactiveRetryers.retry;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,6 +63,7 @@ public class ConfigBean {
          * 禁用hytrix，否则影响并发请求
          * 使用hystrix的话，系统fullgc频繁，请求耗时增加------待验证
          * 异步feign只提供HystrixObservableCommand支持，但是HystrixObservableCommand不支持设置线程池大小，只能使用固定的10个线程，大并发情况下触发线程池拒绝策略问题----待验证
+         * 而且这种场景我们一般不需要熔断隔离机制，并没有线程资源争抢，所以利用了Mono的timeout机制，他会开4个parallel线程，进行超时检测。
          */
         builder.disableHystrix();
         return builder.target(UserFeginService.class, "http://" + USER_SERVICE_NAME);

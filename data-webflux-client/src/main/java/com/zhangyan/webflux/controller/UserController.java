@@ -34,9 +34,10 @@ public class UserController {
                 .timeout(Duration.of(110, ChronoUnit.MILLIS),
                     Mono.just(new Result<>(300, "timeout", null)))
                 .map(result -> {
-                    if (result.getCode() == 400) {
+                    /*if (result.getCode() == 400) {
                         System.out.println(result.toString());
-                    } else if (result.getCode() == 300) {
+                    } else */
+                    if (result.getCode() == 300) {
                         System.out.println("超时:" + result.toString());
                     }
                     return result;
