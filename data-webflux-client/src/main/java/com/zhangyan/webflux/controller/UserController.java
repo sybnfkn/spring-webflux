@@ -31,7 +31,7 @@ public class UserController {
     public Mono<Result<List<User>>> getAllUserWithTime(@PathVariable Integer latency) {
         return userService.getAllUserWithTime(latency)
                 // 110 ms超时
-                .timeout(Duration.of(110, ChronoUnit.MILLIS),
+                .timeout(Duration.of(1000 * 20, ChronoUnit.MILLIS),
                     Mono.just(new Result<>(300, "timeout", null)))
                 .map(result -> {
                     /*if (result.getCode() == 400) {

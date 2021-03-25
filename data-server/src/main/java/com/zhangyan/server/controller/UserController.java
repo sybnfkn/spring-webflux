@@ -42,7 +42,7 @@ public class UserController {
     public Result<List<User>> getAllUserWithTime(@RequestParam(required = false) Integer latency) {
         System.out.println("getAllUserWithTime ....");
         try {
-            Thread.sleep(100);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
